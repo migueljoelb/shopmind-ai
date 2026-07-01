@@ -1,0 +1,14 @@
+# Variables de entorno y claves secretas - NUNCA subir esto a GitHub
+.env
+*.env
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Dependencias (si en algún momento usamos Node.js)
+node_modules/
+
+# Archivos temporales de editores
+.vscode/
+.idea/
