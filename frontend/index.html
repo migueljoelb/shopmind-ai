@@ -1,1 +1,54 @@
-<!-- Aquí construiremos la interfaz de ShopMind AI en la Fase 4 -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <!-- Esta línea le dice al navegador móvil que use el ancho real de la pantalla -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShopMind AI - Asistente de la tienda</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Contenedor principal del chat -->
+  <div class="chat-container">
+
+    <!-- Encabezado con el logo y el nombre del agente -->
+    <header class="chat-header">
+      <div class="avatar">S</div>
+      <div class="header-info">
+        <h1>ShopMind AI</h1>
+        <span class="status">
+          <span class="status-dot"></span>
+          En línea
+        </span>
+      </div>
+    </header>
+
+    <!-- Aquí se van a insertar los mensajes dinámicamente con JavaScript -->
+    <main class="chat-messages" id="chat-messages">
+      <!-- El mensaje de bienvenida se agrega automáticamente desde script.js -->
+    </main>
+
+    <!-- Indicador "está escribiendo...", oculto por defecto -->
+    <div class="typing-indicator" id="typing-indicator" hidden>
+      <span class="avatar avatar-small">S</span>
+      <span>ShopMind AI está escribiendo...</span>
+    </div>
+
+    <!-- Formulario para escribir y enviar el mensaje -->
+    <form class="chat-input-area" id="chat-form">
+      <input
+        type="text"
+        id="user-input"
+        placeholder="Escribe tu pregunta..."
+        autocomplete="off"
+        required
+      >
+      <button type="submit" id="send-button">Enviar</button>
+    </form>
+
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

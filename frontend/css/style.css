@@ -1,1 +1,195 @@
-/* Estilos de ShopMind AI - se completan en la Fase 4 */
+/* ===========================
+   1. Reseteo básico
+   =========================== */
+/* Quitamos los márgenes y rellenos por defecto que trae cada navegador,
+   para tener control total del diseño desde cero. */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+  background-color: #F1EFE8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 16px;
+}
+
+/* ===========================
+   2. Contenedor principal
+   =========================== */
+.chat-container {
+  width: 100%;
+  max-width: 420px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  height: 640px;
+}
+
+/* ===========================
+   3. Encabezado
+   =========================== */
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid #E5E3DA;
+  background-color: #FFFFFF;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #0F6E56;
+  color: #E1F5EE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.avatar-small {
+  width: 24px;
+  height: 24px;
+  font-size: 11px;
+}
+
+.header-info h1 {
+  font-size: 16px;
+  color: #2C2C2A;
+}
+
+.status {
+  font-size: 12px;
+  color: #0F6E56;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #1D9E75;
+  display: inline-block;
+}
+
+/* ===========================
+   4. Área de mensajes
+   =========================== */
+.chat-messages {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Cada burbuja de mensaje. Usamos una clase base .message
+   y luego dos variantes: .bot y .user */
+.message {
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+.message.bot {
+  align-self: flex-start;
+  background-color: #F1EFE8;
+  color: #2C2C2A;
+  border-bottom-left-radius: 4px;
+}
+
+.message.user {
+  align-self: flex-end;
+  background-color: #0F6E56;
+  color: #E1F5EE;
+  border-bottom-right-radius: 4px;
+}
+
+/* ===========================
+   5. Indicador "escribiendo..."
+   =========================== */
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px 8px;
+  font-size: 12px;
+  color: #888780;
+  font-style: italic;
+}
+
+/* Cuando el atributo "hidden" está presente en el HTML,
+   el navegador ya no lo muestra - no necesitamos CSS extra para eso. */
+
+/* ===========================
+   6. Área para escribir el mensaje
+   =========================== */
+.chat-input-area {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid #E5E3DA;
+}
+
+.chat-input-area input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid #D3D1C7;
+  border-radius: 20px;
+  font-size: 14px;
+  outline: none;
+}
+
+.chat-input-area input:focus {
+  border-color: #0F6E56;
+}
+
+.chat-input-area button {
+  background-color: #0F6E56;
+  color: #E1F5EE;
+  border: none;
+  border-radius: 20px;
+  padding: 0 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.chat-input-area button:hover {
+  background-color: #085041;
+}
+
+/* ===========================
+   7. Diseño responsive (móvil)
+   =========================== */
+/* Esta regla solo se aplica cuando la pantalla mide 480px o menos,
+   como la mayoría de los celulares */
+@media (max-width: 480px) {
+  .chat-container {
+    height: 100vh;
+    border-radius: 0;
+    max-width: 100%;
+  }
+  body {
+    padding: 0;
+  }
+}
