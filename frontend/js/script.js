@@ -1,7 +1,8 @@
 // ==========================================================
 // CONFIGURACIÓN
 // ==========================================================
-
+// Esta es la URL del Webhook de n8n. Todavía no existe -
+// la vamos a crear y pegar aquí en la Fase 6: Integración con IA.
 const N8N_WEBHOOK_URL = "https://shopmind.app.n8n.cloud/webhook/shopmind";
 
 // ==========================================================
