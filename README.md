@@ -1,12 +1,20 @@
 # ShopMind AI
 
-**Repositorio:** https://github.com/migueljoelb/shopmind-ai
-**Demo en producción:** https://shopmind-ai-migueljoelb.netlify.app
-**Autor:** Miguel Joel Brito ([@migueljoelb](https://github.com/migueljoelb))
+- **Repositorio:** https://github.com/migueljoelb/shopmind-ai
+- **Demo en producción:** https://shopmind-ai-migueljoelb.netlify.app
+- **Autor:** Miguel Joel Brito ([@migueljoelb](https://github.com/migueljoelb))
 
 ---
 
 Agente conversacional de inteligencia artificial para tiendas de comercio electrónico, desarrollado como Proyecto Final del Challenge Alura + Oracle Next Education (ONE).
+
+## Preguntas sugeridas para evaluar el agente
+
+Para facilitar la revisión, se recomienda iniciar la prueba del chat con las siguientes preguntas, ya que evidencian el uso de la base de conocimiento (RAG) y la memoria de conversación. Posteriormente, se puede probar con cualquier otra pregunta libre.
+
+1. **"¿Cuántos días tengo para devolver un producto?"** — responde con el plazo exacto (30 días) tomado directamente de la política de reembolsos.
+2. **"¿Cuánto cuesta la Laptop UltraSlim 14?"** — responde con el precio real registrado en el catálogo de productos.
+3. **"Si devuelvo un producto, ¿también me devuelven lo que pagué de envío?"** — combina información de dos documentos distintos (política de reembolsos y guía de envíos) para dar una respuesta precisa.
 
 ---
 
@@ -57,13 +65,16 @@ Documentación gráfica adicional de la arquitectura disponible en [`docs/archit
 | Automatización / backend | n8n (n8n Cloud) | Permite construir la lógica del agente mediante flujos visuales, sin mantener un servidor propio. |
 | Modelo de lenguaje | Cohere (Command R+) | Se evaluó inicialmente Google Gemini; se migró a Cohere por presentar límites de cuota gratuita más generosos y estables durante las pruebas del proyecto (ver sección de decisiones técnicas). |
 | Embeddings | Cohere (embed-english-v3.0) | Modelo de embeddings del mismo proveedor que el modelo de lenguaje, con límites de uso independientes. |
+| Reranking | Cohere (rerank-v3.5) | Segunda etapa de la búsqueda documental, para mejorar la precisión ante consultas que combinan varios temas a la vez. |
 | Base de conocimiento | Documentos Markdown | Formato de texto plano, fácil de versionar y fragmentar para su indexación. |
 | Base de datos vectorial | Supabase (PostgreSQL + pgvector) | Nivel gratuito suficiente para el proyecto e incluye base de datos relacional y vectorial en un mismo servicio. |
 | Hosting del frontend | Netlify | Despliegue continuo desde GitHub sin requerir verificación con tarjeta de crédito. |
 
 ### Decisiones técnicas relevantes
 
-**Migración de Google Gemini a Cohere.** Durante la fase de integración se utilizó inicialmente Google Gemini (modelo `gemini-2.5-flash`). Las pruebas de la Fase 8 evidenciaron que el nivel gratuito de Gemini impone un límite de veinte solicitudes diarias por modelo, insuficiente para un ciclo de pruebas intensivo. Se migró la integración completa (modelo de lenguaje y modelo de embeddings) a Cohere, cuyo nivel de prueba permite mil solicitudes mensuales con un límite de veinte solicitudes por minuto, resultando más adecuado para el proyecto.
+**Migración de Google Gemini a Cohere.** La integración del modelo de lenguaje se implementó inicialmente con Google Gemini (`gemini-2.5-flash`). Durante el ciclo de pruebas de integración se identificó que el nivel gratuito de Gemini impone un límite de 20 solicitudes diarias por modelo (RPD), insuficiente para las necesidades de prueba y demostración del proyecto. Se migró la integración completa —modelo de lenguaje y modelo de embeddings— a Cohere, cuyo nivel de prueba permite 1,000 solicitudes mensuales con un límite de 20 solicitudes por minuto (RPM), resultando más adecuado para este caso de uso.
+
+**Uso de un modelo de reranking.** Se identificó que, ante consultas que combinan dos o más temas distintos (por ejemplo, política de devoluciones y costos de envío en una misma pregunta), la búsqueda por similitud vectorial simple no siempre recuperaba el fragmento más relevante entre los primeros resultados. Se incorporó un modelo de reranking (Cohere `rerank-v3.5`) como segunda etapa de la búsqueda documental, reordenando los fragmentos candidatos según su relevancia específica respecto a la consulta completa, lo que mejoró la precisión de las respuestas en este tipo de casos.
 
 **Elección de Netlify sobre Oracle Cloud.** Se consideró desplegar el frontend en Oracle Cloud Infrastructure, dado que el challenge está patrocinado por Oracle. Sin embargo, el registro en Oracle Cloud Free Tier requiere una tarjeta de crédito o débito válida como método de verificación de identidad, requisito que no se pudo cumplir. Se optó por Netlify, que no requiere método de pago para su nivel gratuito y resulta suficiente para el alcance de este proyecto.
 
@@ -92,6 +103,24 @@ shopmind-ai/
 └── assets/
     └── screenshots/
 ```
+
+## Capturas de pantalla
+
+**Interfaz del chat**
+
+![Vista general del chat](assets/screenshots/chat-bienvenida.png)
+
+**Respuesta generada mediante RAG (base de conocimiento)**
+
+![Respuesta con informacion de politica de devoluciones](assets/screenshots/chat-rag-devoluciones.png)
+
+**Consulta sobre el catalogo de productos**
+
+![Respuesta con informacion de producto](assets/screenshots/chat-catalogo-productos.png)
+
+**Workflow principal en n8n**
+
+![Workflow del agente principal en n8n](assets/screenshots/n8n-workflow-principal.png)
 
 ## Instalación y configuración
 

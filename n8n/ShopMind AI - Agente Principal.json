@@ -7,7 +7,7 @@
         "path": "shopmind",
         "responseMode": "responseNode",
         "options": {
-          "allowedOrigins": "*",
+          "allowedOrigins": "https://shopmind-ai-migueljoelb.netlify.app",
           "ignoreBots": false
         }
       },
@@ -41,7 +41,7 @@
         "promptType": "define",
         "text": "={{ $json.body.mensaje }}",
         "options": {
-          "systemMessage": "Eres ShopMind AI, el asistente virtual de una tienda online.\nTu personalidad es profesional, amable, paciente y clara.\nRespondes de forma breve y directa, como lo haría un empleado experto de la tienda.\n\nReglas importantes:\n- NUNCA inventes información sobre productos, precios, políticas o promociones.\n- Si no encuentras la respuesta en la información disponible, dilo honestamente y sugiere contactar al soporte humano.\n- Responde siempre en español, salvo que el cliente te escriba en otro idioma.\n- Antes de responder que no tienes información, SIEMPRE consulta primero la herramienta de búsqueda de documentos, incluso si la pregunta usa palabras distintas a las del documento (por ejemplo, \"no ha llegado\" puede relacionarse con \"retraso en el envío\")."
+          "systemMessage": "Eres ShopMind AI, el asistente virtual de una tienda online.\nTu personalidad es profesional, amable, paciente y clara.\nRespondes de forma breve y directa, como lo haría un empleado experto de la tienda.\n\nReglas importantes:\n- NUNCA inventes información sobre productos, precios, políticas o promociones.\n- Antes de responder que no tienes información, SIEMPRE consulta primero la herramienta de búsqueda de documentos, incluso si la pregunta usa palabras distintas a las del documento. Por ejemplo:\n  - \"no ha llegado\" puede relacionarse con \"retraso en el envío\"\n  - \"no funciona\" o \"está roto\" puede relacionarse con \"producto defectuoso\"\n  - \"quiero cambiar de talla\" puede relacionarse con \"cambios y devoluciones\"\n  - \"cuánto cuesta\" o \"precio de\" puede relacionarse con la ficha del producto en el catálogo\n- Solo si la herramienta de búsqueda no arroja resultados relevantes después de intentarlo, indica honestamente que no tienes esa información disponible y sugiere contactar al soporte humano.\n- Si el cliente pregunta algo fuera del contexto de la tienda, redirige la conversación amablemente explicando en qué sí puedes ayudar (productos, envíos, pagos, devoluciones, políticas), en vez de solo rechazar la pregunta.\n- Responde siempre en español, salvo que el cliente te escriba en otro idioma."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -62,6 +62,8 @@
           "value": "documents",
           "mode": "id"
         },
+        "topK": 6,
+        "useReranker": true,
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
@@ -87,8 +89,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatCohere",
       "typeVersion": 1,
       "position": [
-        64,
-        256
+        224,
+        224
       ],
       "id": "1894cf26-b187-4d6a-a4ce-472d28997e49",
       "name": "Cohere Chat Model",
@@ -106,7 +108,7 @@
       "type": "@n8n/n8n-nodes-langchain.embeddingsCohere",
       "typeVersion": 1,
       "position": [
-        560,
+        496,
         432
       ],
       "id": "de9498f8-cb0c-441e-8eaf-04efef798cfb",
@@ -126,11 +128,28 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.4,
       "position": [
-        288,
-        336
+        352,
+        224
       ],
       "id": "2eea176a-096b-4a7d-bf68-ac4c33c9dc7d",
       "name": "Simple Memory"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.rerankerCohere",
+      "typeVersion": 1,
+      "position": [
+        736,
+        448
+      ],
+      "id": "58b5d2ca-66c3-4777-9e99-5d05df00a979",
+      "name": "Reranker Cohere",
+      "credentials": {
+        "cohereApi": {
+          "id": "YM6NO9JJyplbdsZJ",
+          "name": "Cohere account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -200,6 +219,17 @@
           }
         ]
       ]
+    },
+    "Reranker Cohere": {
+      "ai_reranker": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_reranker",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
@@ -208,7 +238,7 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "98b15236-1477-4c79-83d3-fa1b01e51544",
+  "versionId": "c36151f4-7787-4c61-941d-2d3d21bd8513",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "4df037354fdd7ce27572e18e1cfe9eedeb5fecf46d068a7519ac56c68148af6b"
