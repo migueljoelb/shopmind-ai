@@ -5,6 +5,7 @@
   <!-- Esta línea le dice al navegador móvil que use el ancho real de la pantalla -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ShopMind AI - Asistente de la tienda</title>
+  <link rel="icon" href="data:,">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -32,7 +33,11 @@
     <!-- Indicador "está escribiendo...", oculto por defecto -->
     <div class="typing-indicator" id="typing-indicator" hidden>
       <span class="avatar avatar-small">S</span>
-      <span>ShopMind AI está escribiendo...</span>
+      <span class="typing-dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
     </div>
 
     <!-- Formulario para escribir y enviar el mensaje -->

@@ -131,13 +131,54 @@ body {
   align-items: center;
   gap: 8px;
   padding: 0 16px 8px;
-  font-size: 12px;
-  color: #888780;
-  font-style: italic;
 }
 
 /* Cuando el atributo "hidden" está presente en el HTML,
    el navegador ya no lo muestra - no necesitamos CSS extra para eso. */
+
+/* Contenedor de los 3 puntos animados */
+.typing-dots {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #F1EFE8;
+  padding: 8px 12px;
+  border-radius: 14px;
+  border-bottom-left-radius: 4px;
+}
+
+.typing-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #888780;
+  /* "animation" le dice a este elemento que repita la secuencia
+     "typing-bounce" definida abajo, cada 1.2 segundos, sin parar (infinite) */
+  animation: typing-bounce 1.2s infinite ease-in-out;
+}
+
+/* Cada punto empieza la animación en un momento distinto,
+   usando "animation-delay" - esto crea el efecto de "ola" */
+.typing-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* @keyframes define los "fotogramas clave" de la animación:
+   en qué momento (0%, 50%, 100%) el punto cambia de posición y opacidad */
+@keyframes typing-bounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
 
 /* ===========================
    6. Área para escribir el mensaje
