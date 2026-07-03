@@ -157,6 +157,11 @@ Acceder a la URL pública del sitio desplegado y escribir una consulta en el cam
 - Soporte multilenguaje explícito en la interfaz de usuario.
 - Sistema de valoración de la conversación por parte del cliente.
 
+
+<img width="490" height="674" alt="image" src="https://github.com/user-attachments/assets/3f2a25e7-fde9-4ff6-89d6-097aa166cb0d" />
+
+
+
 ## Licencia
 
 Este proyecto se distribuye bajo los términos de la licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
