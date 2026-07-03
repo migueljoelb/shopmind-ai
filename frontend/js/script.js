@@ -1,9 +1,31 @@
 // ==========================================================
 // CONFIGURACIÓN
 // ==========================================================
-// Esta es la URL del Webhook de n8n. Todavía no existe -
-// la vamos a crear y pegar aquí en la Fase 6: Integración con IA.
-const N8N_WEBHOOK_URL = "https://TU-INSTANCIA.app.n8n.cloud/webhook/shopmind";
+
+const N8N_WEBHOOK_URL = "https://shopmind.app.n8n.cloud/webhook/shopmind";
+
+// ==========================================================
+// SESSION ID (para que el agente recuerde la conversación)
+// ==========================================================
+// sessionStorage guarda datos SOLO mientras la pestaña del navegador
+// esté abierta (se borra al cerrarla) - a diferencia de localStorage,
+// que persistiría para siempre. Es el comportamiento correcto para
+// una conversación de chat: cada nueva visita empieza de cero.
+function obtenerSessionId() {
+  let sessionId = sessionStorage.getItem("shopmind_session_id");
+
+  if (!sessionId) {
+    // Si no existe todavía, generamos uno nuevo usando crypto.randomUUID(),
+    // una función nativa del navegador que crea un identificador único
+    // (algo como "a1b2c3d4-...") sin que tengamos que inventarlo nosotros.
+    sessionId = crypto.randomUUID();
+    sessionStorage.setItem("shopmind_session_id", sessionId);
+  }
+
+  return sessionId;
+}
+
+const sessionId = obtenerSessionId();
 
 // ==========================================================
 // REFERENCIAS AL DOM
@@ -53,12 +75,12 @@ async function sendMessageToAgent(message) {
   try {
     // fetch() envía una solicitud HTTP. "POST" significa que estamos
     // enviando datos (el mensaje), no solo pidiéndolos.
-    const response = await fetch(N8N_WEBHOOK_URL, {
+    const response = await fetch("https://shopmind.app.n8n.cloud/webhook/shopmind", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ mensaje: message })
+      body: JSON.stringify({ mensaje: message, sessionId: sessionId })
     });
 
     if (!response.ok) {
