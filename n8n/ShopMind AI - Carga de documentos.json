@@ -1,0 +1,182 @@
+{
+  "name": "ShopMind AI - Carga de documentos",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "573194fa-f8d0-4d1c-8fb4-c33fec507ecd",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Cada objeto de este arreglo se convierte en un \"item\" separado\n// que los siguientes nodos van a procesar uno por uno.\nreturn [\n  { json: { nombre: \"politica-privacidad\", url: \"https://raw.githubusercontent.com/migueljoelb/shopmind-ai/refs/heads/master/docs/knowledge-base/politica-privacidad.md\" } },\n  { json: { nombre: \"politica-reembolsos\", url: \"https://raw.githubusercontent.com/migueljoelb/shopmind-ai/refs/heads/master/docs/knowledge-base/politica-reembolsos.md\" } },\n  { json: { nombre: \"faq\", url: \"https://raw.githubusercontent.com/migueljoelb/shopmind-ai/refs/heads/master/docs/knowledge-base/faq.md\" } },\n  { json: { nombre: \"guia-envios\", url: \"https://raw.githubusercontent.com/migueljoelb/shopmind-ai/refs/heads/master/docs/knowledge-base/guia-envios.md\" } },\n  { json: { nombre: \"terminos-condiciones\", url: \"https://raw.githubusercontent.com/migueljoelb/shopmind-ai/refs/heads/master/docs/knowledge-base/terminos-condiciones.md\" } },\n  { json: { nombre: \"catalogo-productos\", url: \"https://raw.githubusercontent.com/migueljoelb/shopmind-ai/refs/heads/master/docs/knowledge-base/catalogo-productos.md\" } }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "15fbf180-4a70-4f1f-99ca-79d9d3635ad0",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        448,
+        0
+      ],
+      "id": "72ce195a-b62f-418b-8897-5ed41c40bfc0",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "id"
+        },
+        "options": {
+          "queryName": "match_documents"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        672,
+        0
+      ],
+      "id": "4e6c0e8a-a440-49e5-9a3a-9e04a0ebf541",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "yEsjHxSmwfZ35V59",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json.data }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        976,
+        272
+      ],
+      "id": "d83c415f-96d1-4d7d-90c9-b3e0dfdbd22e",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "modelName": "embed-english-v3.0"
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsCohere",
+      "typeVersion": 1,
+      "position": [
+        688,
+        288
+      ],
+      "id": "59174098-9c2e-4bdd-b273-177d213ae5ce",
+      "name": "Embeddings Cohere",
+      "credentials": {
+        "cohereApi": {
+          "id": "YM6NO9JJyplbdsZJ",
+          "name": "Cohere account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Cohere": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "f815d13c-ced9-4ee9-9eda-b7c579ff172f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4df037354fdd7ce27572e18e1cfe9eedeb5fecf46d068a7519ac56c68148af6b"
+  },
+  "nodeGroups": [],
+  "id": "LQVUV5ECGn14Pcuo",
+  "tags": []
+}
