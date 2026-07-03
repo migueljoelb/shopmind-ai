@@ -104,26 +104,6 @@ shopmind-ai/
     └── screenshots/
 ```
 
-## Capturas de pantalla
-
-**Interfaz del chat**
-
-![Vista general del chat](assets/screenshots/chat-bienvenida.png)
-
-**Respuesta generada mediante RAG (base de conocimiento)**
-
-![Respuesta con informacion de politica de devoluciones](assets/screenshots/chat-rag-devoluciones.png)
-
-**Consulta sobre el catalogo de productos**
-
-![Respuesta con informacion de producto](assets/screenshots/chat-catalogo-productos.png)
-
-**Workflow principal en n8n**
-
-![Workflow del agente principal en n8n](assets/screenshots/n8n-workflow-principal.png)
-
-## Instalación y configuración
-
 ### Requisitos previos
 
 - Cuenta de n8n (n8n Cloud o instancia propia).
